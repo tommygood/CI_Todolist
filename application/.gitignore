@@ -1,0 +1,7 @@
+# git ignore
+/cache/
+/language/
+/logs/
+/core/
+/libraries/
+
