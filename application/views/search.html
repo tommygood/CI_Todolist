@@ -1,8 +1,29 @@
 <html>
     <br/>
+        <table border = '2'>
+	<tr><td colspan = '6'>搜索</td></tr>
+	<tr><td>編號</td><td>姓名</td><td>性別</td><td>生日</td></tr>
+	
+    {{foreach $member as $item}}
+        <tr>
+	<td>
+            {{$item.0.id}}
+	</td>
+	<td>
+	    {{$item.0.name}}
+	</td>
+	<td>
+	    {{$item.0.sex}}
+        </td>
+	<td>
+	    {{$item.0.birth}}
+	</td>
+	</tr>
+    {{/foreach}}
+    <!--
     <?php
 	echo "<table border = '2'>";
-	echo "<tr><td colspan = '6'>細項</td></tr>";
+	echo "<tr><td colspan = '6'>搜索</td></tr>";
 	echo "<tr><td>編號</td><td>姓名</td><td>性別</td><td>生日</td></tr>";
 	foreach ($member as $value) {
 	    echo "<tr>";
@@ -22,4 +43,5 @@
 	}
 	echo "</table>";
     ?>
+    -->
 </html>

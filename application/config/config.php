@@ -473,3 +473,8 @@ $config['time_reference'] = 'local';
 | Array:		array('10.0.1.200', '192.168.5.0/24')
 */
 $config['proxy_ips'] = '';
+
+// smarty
+$autoload['libraries'] = array('Ci_smarty');
+$autoload['config'] = array('smarty');
+$config['subclass_prefix'] = 'MY_';

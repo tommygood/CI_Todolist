@@ -6,6 +6,8 @@
     <head>
         <h1>todolist</h1>
 	<input type = 'hidden' name = 'detail_id' id = 'detail_id'></input>
+	<input type = 'hidden' name = 'delete_id' id = 'delete_id'></input>
+	<input type = 'hidden' name = 'update_id' id = 'update_id'></input>
 	<table border = '2' id = 'tab'>
 	    <tr>代辦清單</tr>
 	    <tr>
@@ -17,8 +19,9 @@
 	    <?php 
 	    foreach ($member as $key=>$item) {
 	        echo "<tr>";
-		echo "<td><input onclick = 'insertDetail({$item['id']})' type = 'submit' name = 'submit' value = 'detail'></input></td>";
 	        echo "<td>{$item["id"]}</td> <td>{$item["name"]}</td> <td>{$item['sex']}</td>";
+		echo "<td><input onclick = 'insertDetail({$item['id']})' type = 'submit' name = 'submit' value = 'detail'></input></td>";
+		echo "<td><input onclick = 'insertDelete({$item['id']})' type = 'submit' name = 'submit' value = 'delete'></input></td>";
 	        echo "</tr>";
 	    }
 	    ?>
@@ -30,20 +33,22 @@
 	<div id = 'tab_pos' class = 'position-relative'></div>
 	<nav aria-label="Page navigation example" class = 'position-absolute bottom-0' id = "page_top">
 	</nav>
-	    <div>新增事項</div>
-	    <input type = "input" name = "name"></input>
-	    <input type = "input" name = "sex"></input>
-	    <input type = "input" name = "birth"></input>
-	    <input type = "submit" name = "submit"></input>
-	    <div>刪除事項</div>
-	    <input type = "input" name = "del_id"></input>
-	    <input type = "submit" name = "submit" value = 'delete'></input>
-	    <div>更新事項</div>
-	    <input type = "input" name = "update_id"></input>
-	    <input type = "input" name = "update_content"></input>
-	    <input type = "submit" name = "submit" value = 'update'></input>
+	    <table border = '2'>
+	        <tr><td colspan = '4'>新增事項</td></tr>
+		<tr>
+		    <td>姓名</td>
+		    <td>性別</td>
+		    <td>生日</td>
+		</tr>
+		<tr>
+	            <td><input type = "input" name = "name"></input></td>
+	            <td><input type = "input" name = "sex"></input></td>
+	    	    <td><input type = "input" name = "birth"></input></td>
+	    	    <td><input type = "submit" name = "submit" value = 'add'></input></td>
+		</tr>
+	    </table>
 	    <div>搜尋事項</div>
-	    <input type = "input" name = "search_id"></input>
+	    <input type = "input" name = "search_id" id = 'search_id'></input>
 	    <input type = "submit" name = "submit" value = 'search'></input>
 	</div>
     </head>
@@ -74,6 +79,10 @@
 
     #page_top {
         left : 30%
+    }
+
+    td {
+        text-align : center;
     }
     </style>
     <script>
@@ -166,11 +175,21 @@
             tab.innerHTML += "<tr id = 'each_row'" + i + "/><td/>" + data_content[i][0] + 
             "<td>" + data_content[i][1] + "</td>" +
             "<td>" + data_content[i][2] + "</td>" +
-	    "<td><input type = 'submit' class = 'detail'  name = 'submit' value = 'detail' id = '" + data_content[i][0] + "'></input></td></tr>";
+	    "<td><input type = 'submit' class = 'detail'  name = 'submit' value = 'detail' id = '" + data_content[i][0] + "'></input></td>" +
+	    "<td><input type = 'submit' class = 'delete'  name = 'submit' value = 'delete' id = '" + data_content[i][0] + "'></input></td>" +
+	    "<td><input type = 'submit' class = 'update'  name = 'submit' value = 'update' id = '" + data_content[i][0] + "'></input></td></tr>";
         }
 	const all_detail_bt = document.getElementsByClassName('detail');
 	for (let i = 0;i < all_detail_bt.length;i++) {
 	    all_detail_bt[i].addEventListener('click', submitDetail);
+	}
+	const all_delete_bt = document.getElementsByClassName('delete');
+	for (let i = 0;i < all_delete_bt.length;i++) {
+	    all_delete_bt[i].addEventListener('click', submitDelete);
+	}
+	const all_update_bt = document.getElementsByClassName('update');
+	for (let i = 0;i < all_update_bt.length;i++) {
+	    all_update_bt[i].addEventListener('click', submitUpdate);
 	}
     }
 
@@ -180,7 +199,7 @@
     async function tabTitle() { // 製作 table title
         //const {data : user} = await axios.get('/viewPa/nId');
         getId('tab').innerHTML = 
-        "<tr><td colspan = '7'>人員</td></tr><tr><td>編號</td><td>姓名</td><td>性別</td><td>細項</td></tr>"; 
+        "<tr><td colspan = '7'>人員</td></tr><tr><td>編號</td><td>姓名</td><td>性別</td><td>細項</td><td>刪除</td><td>更新</td></tr>"; 
     }
 
     function mkPage(page_num) { // make page with page_num
@@ -357,6 +376,16 @@
 	function submitDetail(e) {
 	    var bt_id = e.target.id;
 	    document.getElementById('detail_id').value = parseInt(bt_id);
+	}
+
+	function submitDelete(e) {
+	    var bt_id = e.target.id;
+	    document.getElementById('delete_id').value = parseInt(bt_id);
+	}
+
+	function submitUpdate(e) {
+	    var bt_id = e.target.id;
+	    document.getElementById('update_id').value = parseInt(bt_id);
 	}
     </script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
